@@ -1,9 +1,18 @@
-def call(String service) {
+def boolean call(String service) {
     echo("Creating NPM audit report for ${service}")
+    boolean result
     try {
-        sh script: "cd ${service} && npm audit | tail"
-        echo "Successfully generated NPM audit report for ${service}"
+        boolean auditExitCode = sh (script: 'npm audit', returnStatus: true) == 0
+        if (auditExitCode) {
+            result = true
+            echo "Successfully generated NPM audit report for ${service}"
+        } else {
+            result = false
+            echo "[ERROR] NPM audit failed for ${service}"
+        }
+        return result
     } catch (Exception e) {
-        echo "Failed to generate NPM audit report for ${service}"
+        echo "[ERROR] Failed to generate NPM audit report for ${service}"
+        echo "[ERROR] Exception: ${e}"
     }
 }
