@@ -1,3 +1,8 @@
+/**
+ * Function to run and log the output of the npm audit command
+ * @param service - name of the service on which the NPM audit action is being performed
+ * @return boolean related to success of the audit
+ */
 def boolean call(String service) {
     echo("Creating NPM audit report for ${service}")
     boolean result
